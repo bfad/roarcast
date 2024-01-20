@@ -36,3 +36,6 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Ignore special files for the dotenv gem
+/.env*.local

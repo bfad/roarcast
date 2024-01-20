@@ -18,6 +18,9 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load dotenv earlier so environment files are loaded for configuration
+Dotenv::Railtie.load
+
 module Roarcast
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
