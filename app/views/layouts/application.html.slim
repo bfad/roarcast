@@ -11,5 +11,6 @@ html
     = javascript_importmap_tags
 
   body
-    h1.text-3xl.font-serif.px-5.pt-4 Roarcast
+    h1.text-3xl.font-serif.px-5.pt-4
+      = link_to 'Roarcast', root_path, class: '!text-black !no-underline'
     main.container.mx-auto.mt-8.px-5 = yield

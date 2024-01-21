@@ -1,6 +1,13 @@
 # README
 
 Roarcast is a Ruby on Rails application that looks up the weather for a given location.
+Currently, users are prompted for a zip code to look up the forecast. However, Roarcast
+will technically work with a city / state pairing such as "Cupertino, CA" or even just a
+large city such as "Chicago". This capability isn't currently exposed to users to try and
+keep all cache entries specific to the zip code. (If given a city name, the cache will be
+stored under the city instead of a zip code as many cities have multiple zip codes. We could
+implement some sort of translation and randomly choose from multiple zip codes, or we could
+cache by some other value such as latitude / longitude coordinates.)
 
 ## Getting Started with Local Development
 

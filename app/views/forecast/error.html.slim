@@ -5,3 +5,8 @@
     p.ml-8 = forecast.errors.full_messages.join(' ')
     p.mt-4 Please check your data and try again.
 
+  .mt-8
+    == render partial: 'form', locals: {zipcode:}
+
+  .mt-16
+    = link_to 'Start Over', root_path

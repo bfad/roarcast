@@ -11,3 +11,23 @@
 }
 
 */
+
+/* Basic link styles */
+@layer base {
+  a {
+    @apply text-blue-700;
+  }
+  a:hover {
+    @apply text-blue-500;
+    text-decoration: underline;
+  }
+  a:active {
+    text-decoration: none;
+  }
+  a:visited {
+    @apply text-violet-800;
+  }
+  a:visited:hover {
+    @apply text-violet-500;
+  }
+}

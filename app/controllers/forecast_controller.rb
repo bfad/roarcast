@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class ForecastController < ApplicationController
+  def index
+    render locals: {zipcode: ''}
+  end
+
   def show
     zipcode = params[:zipcode]
     forecast = Forecast.new(zipcode)

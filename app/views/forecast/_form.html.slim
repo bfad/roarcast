@@ -1,0 +1,6 @@
+div data-controller='dynamic-url' data-dynamic-url-base-value=forecast_url(zipcode: '::value::')
+  label.mr-2
+    | Zip Code
+    br
+    = text_field_tag(:zipcode, zipcode, size: 5, data: {'dynamic-url-target': 'value', action: 'keydown.enter->dynamic-url#go'})
+  = button_tag('Get Forecast', class: default_button_classes, data: {action: 'dynamic-url#go'})

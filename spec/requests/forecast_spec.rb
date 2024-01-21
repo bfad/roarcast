@@ -6,6 +6,15 @@ require_relative '../shared_api_contexts'
 RSpec.describe 'Forecasts', type: :request do
   include_context 'forecast api responses'
 
+  describe 'GET index' do
+    it 'renders the form elements to enter a zip code' do
+      get forecast_index_url
+
+      expect(response).to have_http_status(:ok)
+      expect(parsed_body.at('input[name=zipcode]')).to be_present
+    end
+  end
+
   describe 'GET show' do
     let(:zipcode) { '90210' }
 
