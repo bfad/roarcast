@@ -39,3 +39,6 @@
 
 # Ignore special files for the dotenv gem
 /.env*.local
+
+# Any generated yard documentation for the documentation server
+/.yardoc

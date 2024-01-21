@@ -33,6 +33,13 @@ Tailwind classes to add and remove to the CSS file.
 
 - [Weather API][]: The source of all weather data
 
+## Documentation
+
+This project uses [YARD][] for documentation. (See its documentation for how to document
+your code changes.) The gem is installed in the "test" and "development" environments. In
+those environments, you can run `bundle exec yard server` from the root of the project to
+start a web server that will serve the generated documentation.
+
 
 ## License
 
@@ -57,3 +64,4 @@ limitations under the License.
 [Slim]: https://slim-template.github.io
 [TailwindCSS]: https://tailwindcss.com
 [Weather API]: https://www.weatherapi.com
+[YARD]: https://yardoc.org
