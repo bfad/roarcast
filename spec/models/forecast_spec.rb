@@ -106,6 +106,30 @@ RSpec.describe Forecast do
     end
   end
 
+  describe '#valid?' do
+    subject(:weather) { described_class.new('90210') }
+
+    it 'returns true with a valid response' do
+      expect(weather).to be_valid
+    end
+
+    context 'when an error is returned' do
+      before do
+        expect(WeatherApiClient).to receive(:get)
+          .and_return({"error" => {"code" => 1006, "message" => "No matching location found."}})
+      end
+
+      it { is_expected.to be_invalid }
+
+      it 'sets the error on the "base" attribute' do
+        weather.valid?
+
+        expect(weather.errors.messages_for(:base).first)
+          .to eql('No matching location found.')
+      end
+    end
+  end
+
   describe '#forecast' do
     let(:tested_action) { described_class.new(zipcode).forecast }
 
@@ -115,6 +139,22 @@ RSpec.describe Forecast do
       forecast = tested_action
       expect(forecast).not_to be_empty
       expect(forecast).to all(be_a(Forecast::Day))
+    end
+
+    it 'returns an empty array when there is a lookup error' do
+      expect(WeatherApiClient).to receive(:get)
+        .and_return({"error" => {"code" => 1006, "message" => "No matching location found."}})
+      weather = described_class.new('333')
+
+      expect(weather).to be_invalid
+      expect(weather.forecast).to be_empty
+    end
+
+    it 'returns an empty array if there is unexpected data returned from the API' do
+      expect(WeatherApiClient).to receive(:get).and_return({"bad" => {"data" => 42}})
+      weather = described_class.new('90210')
+
+      expect(weather.forecast).to be_empty
     end
   end
 
@@ -135,6 +175,22 @@ RSpec.describe Forecast do
           ),
           updated_at: expected_data['last_updated']
         )
+    end
+
+    it 'returns nil when there is a lookup error' do
+      expect(WeatherApiClient).to receive(:get)
+        .and_return({"error" => {"code" => 1006, "message" => "No matching location found."}})
+      weather = described_class.new('333')
+
+      expect(weather).to be_invalid
+      expect(weather.current).to be nil
+    end
+
+    it 'returns nil if there is unexpected data returned from the API' do
+      expect(WeatherApiClient).to receive(:get).and_return({"bad" => {"data" => 42}})
+      weather = described_class.new('90210')
+
+      expect(weather.current).to be nil
     end
   end
 end

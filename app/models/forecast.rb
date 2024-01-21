@@ -2,9 +2,13 @@
 
 # This is the model that handles fetching and caching the forecast data.
 class Forecast
+  include ActiveModel::Validations
+
   CACHE_LENGTH = 30.minutes
 
   attr_reader :zipcode
+
+  validate :no_weather_data_errors
 
   def initialize(zipcode)
     self.zipcode = zipcode
@@ -13,9 +17,12 @@ class Forecast
   # Look up the weather forecast for a zipcode.
   #
   # @return [Array<Forecast::Day>] a list of the basic weather conditions for the next
-  #   five days.
+  #   five days. Returns an empty array if there is an error.
   def forecast
-    weather_api_data.dig('forecast', 'forecastday').map do |data|
+    data = weather_api_data.dig('forecast', 'forecastday')
+    return [] if invalid? || data.nil?
+
+    data.map do |data|
       Day.new(
         date: Date.parse(data['date']),
         high: data.dig('day', 'maxtemp_f').round,
@@ -32,9 +39,11 @@ class Forecast
 
   # Look up the current weather conditions for a zipcode
   #
-  # @return [Forecast::Now] the current weather conditions for
+  # @return [Forecast::Now, nil] the current weather conditions for the forecast's zipcode.
+  #   Returns `nil` if there is an error.
   def current
     data = weather_api_data['current']
+    return if invalid? || data.nil?
 
     Now.new(
       temperature: data['temp_f'].round,
@@ -57,5 +66,11 @@ class Forecast
     @weather_api_data = Rails.cache.fetch("forecast:#{zipcode}", expires_in: CACHE_LENGTH) do
       WeatherApiClient.new.forecast(zipcode)
     end
+  end
+
+  def no_weather_data_errors
+    return unless weather_api_data.has_key?("error")
+
+    errors.add(:base, weather_api_data.dig('error', 'message'))
   end
 end
