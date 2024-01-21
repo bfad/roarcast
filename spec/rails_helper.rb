@@ -62,6 +62,13 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Include custom helper methods
+  config.when_first_matching_example_defined(type: :request) do
+    require 'support/request_methods'
+
+    config.include RequestMethods, type: :request
+  end
 end
 
 ENV['WEATHER_API_KEY'] = 'Invalid+Key'

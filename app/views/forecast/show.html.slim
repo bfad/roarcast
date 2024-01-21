@@ -1,0 +1,21 @@
+.max-w-sm.md:max-w-5xl.mx-auto
+  .current_conditions.text-xl
+    h2.text-2xl Current Conditions for #{zipcode}
+
+    .flex.items-center
+      img.flex-none src=forecast.current.condition.icon_url alt=forecast.current.condition.name
+      div = "#{forecast.current.temperature}°F (feels like #{forecast.current.feels_like} °F)"
+
+  .forecast.mt-8
+    h2.text-2xl Forecast
+
+    .flex.flex-col.md:flex-row.justify-center.space-y-4.md:space-y-0.md:space-x-8.mt-4
+      - forecast.forecast.each do |day|
+        .forecast_day.grow
+          .text-xl = day.date.to_fs(:short_relative_day)
+
+          .flex.items-center
+            img src=day.condition.icon_url alt=day.condition.name
+            div.text-center
+              div #{day.high}° / #{day.low}°
+              div #{day.chance_of_precipitation}%

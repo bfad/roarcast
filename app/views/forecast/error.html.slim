@@ -1,0 +1,7 @@
+.max-w-lg.mx-auto
+  .error_msg.max-w-prose.border-2.border-rose-400.px-8.py-4.text-rose-600
+    h2.text-3xl.font-bold Error!
+    p.mt-8 There was a problem fulfilling your request:
+    p.ml-8 = forecast.errors.full_messages.join(' ')
+    p.mt-4 Please check your data and try again.
+
